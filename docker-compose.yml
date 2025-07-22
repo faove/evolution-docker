@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  evolution-api:
+    image: devlikeapro/evolution-api:latest
+    container_name: evolution-api
+    environment:
+      - WA_AUTOMATE=true
+      - WA_PORT=8000
+      # Add more environment variables as needed
+    ports:
+      - "8000:8000"
+    volumes:
+      - evolution_data:/app/data
+    restart: unless-stopped
+    networks:
+      - net_service
+volumes:
+  evolution_data:
+
+networks:
+  net_service: {}
