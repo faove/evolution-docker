@@ -8,16 +8,24 @@ services:
     depends_on:
       - redis
       - postgres
-    ports:
-      - 8081:8080
-    volumes:
-      - evolution_instances:/evolution/instances
+    environment:
+      - API_HOST=evolution.xservice.com.ar   # Change as needed for your domain
+      - API_PORT=8080
+      # Add other environment variables as needed
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.evolution.rule=Host(`evolution.xservice.com.ar`)"  # Change domain as needed
+      - "traefik.http.routers.evolution.entrypoints=websecure"
+      - "traefik.http.routers.evolution.tls.certresolver=letsencrypt"
+      - "traefik.http.services.evolution.loadbalancer.server.port=8080"
     networks:
       - net_service
+    volumes:
+      - evolution_instances:/evolution/instances
     env_file:
       - .env
     expose:
-      - 8081
+      - 8080
 
   redis:
     image: redis:latest
@@ -57,5 +65,4 @@ volumes:
 
 networks:
   net_service:
-    name: net_service
-    driver: bridge
+    external: true
