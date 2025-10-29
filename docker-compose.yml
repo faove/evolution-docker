@@ -19,7 +19,7 @@ services:
       - "traefik.http.routers.evolution.tls.certresolver=letsencrypt"
       - "traefik.http.services.evolution.loadbalancer.server.port=8080"
     networks:
-      - net_service
+      - elantar_net
     volumes:
       - evolution_instances:/evolution/instances
     env_file:
@@ -30,7 +30,7 @@ services:
   redis:
     image: redis:latest
     networks:
-      - net_service
+      - elantar_net
     container_name: redis
     command: >
       redis-server --port 6379 --appendonly yes
@@ -43,7 +43,7 @@ services:
     container_name: postgres
     image: postgres:15
     networks:
-      - net_service
+      - elantar_net
     command: ["postgres", "-c", "max_connections=1000", "-c", "listen_addresses=*"]
     restart: always
     ports:
@@ -64,5 +64,5 @@ volumes:
   postgres_data:
 
 networks:
-  net_service:
+  elantar_net:
     external: true
