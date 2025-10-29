@@ -40,7 +40,7 @@ services:
       - 6379:6379
 
   postgres:
-    container_name: postgres
+    container_name: evolution_postgres
     image: postgres:15
     networks:
       - elantar_net
